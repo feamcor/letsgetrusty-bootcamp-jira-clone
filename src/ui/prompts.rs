@@ -25,12 +25,7 @@ fn create_epic_prompt() -> Epic {
     let name = get_user_input().trim().to_owned();
     println!("Epic Description:");
     let description = get_user_input().trim().to_owned();
-    Epic {
-        name,
-        description,
-        status: Status::Open,
-        stories: vec![]
-    }
+    Epic::new(name, description)
 }
 
 fn create_story_prompt() -> Story {
@@ -38,11 +33,7 @@ fn create_story_prompt() -> Story {
     let name = get_user_input().trim().to_owned();
     println!("Story Description:");
     let description = get_user_input().trim().to_owned();
-    Story {
-        name,
-        description,
-        status: Status::Open
-    }
+    Story::new(name, description)
 }
 
 fn delete_epic_prompt() -> bool {
