@@ -2,24 +2,18 @@ use ellipse::Ellipse;
 
 pub fn get_column_string(text: &str, width: usize) -> String {
     let text = text.trim();
-    if width == 0 {
-        String::from("")
-    } else if width <= 3 {
-        ".".repeat(width)
-    } else if text.is_empty() {
-        " ".repeat(width)
-    } else if text.len() == width {
-        String::from(text)
-    } else if text.len() < width {
-        let mut text = String::from(text);
-        let trailing_spaces = " ".repeat(width - text.len());
-        text.push_str(&trailing_spaces);
-        text
-    } else {
-        let mut text = String::from(text);
-        let trailing_spaces = " ".repeat(text.len() - width);
-        text.push_str(&trailing_spaces);
-        text.as_str().truncate_ellipse(width - 3).to_string()
+    match width {
+        0 => String::new(),
+        1..=3 => ".".repeat(width),
+        _ if text.is_empty() => " ".repeat(width),
+        _ if text.len() == width => text.to_string(),
+        _ if text.len() < width => {
+            let mut s = String::from(text);
+            let pad = " ".repeat(width - s.len());
+            s.push_str(&pad);
+            s
+        }
+        _ => text.truncate_ellipse(width - 3).to_string(),
     }
 }
 

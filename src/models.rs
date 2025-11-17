@@ -1,6 +1,5 @@
 use serde::Deserialize;
 use serde::Serialize;
-use std::collections::HashMap;
 use std::fmt::Display;
 
 #[derive(Debug, PartialEq, Eq)]
@@ -17,7 +16,7 @@ pub enum Action {
     Exit,
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Copy, Clone)]
 pub enum Status {
     Open,
     InProgress,
@@ -45,10 +44,10 @@ pub struct Epic {
 }
 
 impl Epic {
-    pub fn new(name: String, description: String) -> Self {
+    pub fn new<N: Into<String>, D: Into<String>>(name: N, description: D) -> Self {
         Self {
-            name,
-            description,
+            name: name.into(),
+            description: description.into(),
             status: Status::Open,
             stories: Vec::new(),
         }
@@ -63,18 +62,18 @@ pub struct Story {
 }
 
 impl Story {
-    pub fn new(name: String, description: String) -> Self {
+    pub fn new<N: Into<String>, D: Into<String>>(name: N, description: D) -> Self {
         Self {
-            name,
-            description,
+            name: name.into(),
+            description: description.into(),
             status: Status::Open,
         }
     }
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone, Default)]
 pub struct DBState {
     pub last_item_id: u32,
-    pub epics: HashMap<u32, Epic>,
-    pub stories: HashMap<u32, Story>,
+    pub epics: std::collections::HashMap<u32, Epic>,
+    pub stories: std::collections::HashMap<u32, Story>,
 }

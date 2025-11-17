@@ -14,6 +14,7 @@ use page_helpers::*;
 pub trait Page {
     fn draw_page(&self) -> Result<()>;
     fn handle_input(&self, input: &str) -> Result<Option<Action>>;
+    #[cfg_attr(not(test), allow(dead_code))]
     fn as_any(&self) -> &dyn Any;
 }
 
@@ -53,7 +54,7 @@ impl Page for HomePage {
             "c" => Ok(Some(Action::CreateEpic)),
             id if id.parse::<u32>().is_ok() => {
                 let id = input.parse::<u32>()?;
-                if self.db.read_db()?.epics.get(&id).is_some() {
+                if self.db.read_db()?.epics.contains_key(&id) {
                     Ok(Some(Action::NavigateToEpicDetail { epic_id: id }))
                 } else {
                     Ok(None)
@@ -135,7 +136,7 @@ impl Page for EpicDetail {
             })),
             id if id.parse::<u32>().is_ok() => {
                 let id = input.parse::<u32>()?;
-                if self.db.read_db()?.stories.get(&id).is_some() {
+                if self.db.read_db()?.stories.contains_key(&id) {
                     Ok(Some(Action::NavigateToStoryDetail {
                         epic_id: self.epic_id,
                         story_id: id,
@@ -198,7 +199,7 @@ impl Page for StoryDetail {
             })),
             id if id.parse::<u32>().is_ok() => {
                 let id = input.parse::<u32>()?;
-                if self.db.read_db()?.stories.get(&id).is_some() {
+                if self.db.read_db()?.stories.contains_key(&id) {
                     Ok(Some(Action::NavigateToStoryDetail {
                         epic_id: self.epic_id,
                         story_id: id,
@@ -232,7 +233,7 @@ mod tests {
             });
 
             let page = HomePage { db };
-            assert_eq!(page.draw_page().is_ok(), true);
+            assert!(page.draw_page().is_ok());
         }
 
         #[test]
@@ -242,7 +243,7 @@ mod tests {
             });
 
             let page = HomePage { db };
-            assert_eq!(page.handle_input("").is_ok(), true);
+            assert!(page.handle_input("").is_ok());
         }
 
         #[test]
@@ -297,7 +298,7 @@ mod tests {
                 .unwrap();
 
             let page = EpicDetail { epic_id, db };
-            assert_eq!(page.draw_page().is_ok(), true);
+            assert!(page.draw_page().is_ok());
         }
 
         #[test]
@@ -310,7 +311,7 @@ mod tests {
                 .unwrap();
 
             let page = EpicDetail { epic_id, db };
-            assert_eq!(page.handle_input("").is_ok(), true);
+            assert!(page.handle_input("").is_ok());
         }
 
         #[test]
@@ -320,7 +321,7 @@ mod tests {
             });
 
             let page = EpicDetail { epic_id: 999, db };
-            assert_eq!(page.draw_page().is_err(), true);
+            assert!(page.draw_page().is_err());
         }
 
         #[test]
@@ -404,7 +405,7 @@ mod tests {
                 story_id,
                 db,
             };
-            assert_eq!(page.draw_page().is_ok(), true);
+            assert!(page.draw_page().is_ok());
         }
 
         #[test]
@@ -425,7 +426,7 @@ mod tests {
                 story_id,
                 db,
             };
-            assert_eq!(page.handle_input("").is_ok(), true);
+            assert!(page.handle_input("").is_ok());
         }
 
         #[test]
@@ -446,7 +447,7 @@ mod tests {
                 story_id: 999,
                 db,
             };
-            assert_eq!(page.draw_page().is_err(), true);
+            assert!(page.draw_page().is_err());
         }
 
         #[test]
