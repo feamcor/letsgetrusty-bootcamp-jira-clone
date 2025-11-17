@@ -32,9 +32,9 @@ impl Page for HomePage {
             .sorted_by_key(|(id, _epic)| *id)
             .for_each(|(id, epic)| println!(
                 "{} | {} | {}",
-                get_column_string(&id.to_string(), 12),
-                get_column_string(&epic.name, 0),
-                get_column_string(&epic.status.to_string(), 0)
+                get_column_string(&id.to_string(), 11),
+                get_column_string(&epic.name, 32),
+                get_column_string(&epic.status.to_string(), 16)
             ));
 
         println!();
@@ -81,9 +81,9 @@ impl Page for EpicDetail {
 
         println!(
             "{} | {} | {} | {}",
-            get_column_string(&self.epic_id.to_string(), 6),
-            get_column_string(&epic.name, 14),
-            get_column_string(&epic.description, 29),
+            get_column_string(&self.epic_id.to_string(), 5),
+            get_column_string(&epic.name, 12),
+            get_column_string(&epic.description, 27),
             get_column_string(&epic.status.to_string(), 14)
         );
   
@@ -98,9 +98,9 @@ impl Page for EpicDetail {
                 let story = db_state.stories.get(story_id).ok_or_else(|| anyhow!("could not find story!")).unwrap();
                 println!(
                     "{} | {} | {}",
-                    get_column_string(&story_id.to_string(), 12),
-                    get_column_string(&story.name, 0),
-                    get_column_string(&story.status.to_string(), 0)
+                    get_column_string(&story_id.to_string(), 11),
+                    get_column_string(&story.name, 32),
+                    get_column_string(&story.status.to_string(), 16)
                 )
             });
 
@@ -151,10 +151,10 @@ impl Page for StoryDetail {
 
         println!(
             "{} | {} | {} | {}",
-            get_column_string(&self.story_id.to_string(), 6),
-            get_column_string(&story.name, 14),
-            get_column_string(&story.description, 29),
-            get_column_string(&story.status.to_string(), 14)
+            get_column_string(&self.story_id.to_string(), 5),
+            get_column_string(&story.name, 12),
+            get_column_string(&story.description, 27),
+            get_column_string(&story.status.to_string(), 16)
         );
 
         println!();

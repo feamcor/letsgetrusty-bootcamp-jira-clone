@@ -1,5 +1,4 @@
 use ellipse::Ellipse;
-use itertools::Itertools;
 
 pub fn get_column_string(text: &str, width: usize) -> String {
     let text = text.trim();
@@ -9,15 +8,18 @@ pub fn get_column_string(text: &str, width: usize) -> String {
         ".".repeat(width)
     } else if text.is_empty() {
         " ".repeat(width)
-    } else if text.len() < width && width - text.len() < 3 {
+    } else if text.len() == width {
+        String::from(text)
+    } else if text.len() < width {
         let mut text = String::from(text);
         let trailing_spaces = " ".repeat(width - text.len());
         text.push_str(&trailing_spaces);
         text
-    } else if text.len() == width {
-        String::from(text)
     } else {
-        String::from(text.truncate_ellipse(width - 3))
+        let mut text = String::from(text);
+        let trailing_spaces = " ".repeat(text.len() - width);
+        text.push_str(&trailing_spaces);
+        text.as_str().truncate_ellipse(width - 3).to_string()
     }
 }
 
