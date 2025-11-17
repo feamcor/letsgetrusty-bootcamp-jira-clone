@@ -1,3 +1,4 @@
+use std::any::Any;
 use std::rc::Rc;
 
 use itertools::Itertools;
@@ -13,6 +14,7 @@ use page_helpers::*;
 pub trait Page {
     fn draw_page(&self) -> Result<()>;
     fn handle_input(&self, input: &str) -> Result<Option<Action>>;
+    fn as_any(&self) -> &dyn Any;
 }
 
 pub struct HomePage {
@@ -37,6 +39,7 @@ impl Page for HomePage {
 
         println!();
         println!();
+
         println!("[q] quit | [c] create epic | [:id:] navigate to epic");
 
         Ok(())
@@ -56,6 +59,10 @@ impl Page for HomePage {
             },
             _ => Ok(None),
         }
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }
 
@@ -99,6 +106,7 @@ impl Page for EpicDetail {
 
         println!();
         println!();
+
         println!("[p] previous | [u] update epic | [d] delete epic | [c] create story | [:id:] navigate to story");
 
         Ok(())
@@ -120,6 +128,10 @@ impl Page for EpicDetail {
             },
             _ => Ok(None),
         }
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }
 
@@ -147,6 +159,7 @@ impl Page for StoryDetail {
 
         println!();
         println!();
+
         println!("[p] previous | [u] update story | [d] delete story");
 
         Ok(())
@@ -167,6 +180,10 @@ impl Page for StoryDetail {
             },
             _ => Ok(None),
         }
+    }
+
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }
 
