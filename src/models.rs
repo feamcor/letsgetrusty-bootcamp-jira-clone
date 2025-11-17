@@ -1,7 +1,7 @@
+use serde::Deserialize;
+use serde::Serialize;
 use std::collections::HashMap;
 use std::fmt::Display;
-use serde::Serialize;
-use serde::Deserialize;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Action {

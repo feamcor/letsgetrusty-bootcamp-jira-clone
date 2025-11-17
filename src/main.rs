@@ -26,34 +26,30 @@ fn main() {
         };
 
         match current_page.draw_page() {
-            Ok(_) => {},
+            Ok(_) => {}
             Err(e) => {
                 eprintln!("Error: {}", e);
                 break;
-            },
+            }
         }
 
         let input = get_user_input();
 
         match current_page.handle_input(&input) {
-            Ok(current_action) => {
-                match current_action {
-                    Some(current_action) => {
-                        match navigator.handle_action(current_action) {
-                            Ok(_) => {},
-                            Err(e) => {
-                                eprintln!("Error: {}", e);
-                                break;
-                            },
-                        }
-                    },
-                    None => {},
-                }
-            }
+            Ok(current_action) => match current_action {
+                Some(current_action) => match navigator.handle_action(current_action) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        eprintln!("Error: {}", e);
+                        break;
+                    }
+                },
+                None => {}
+            },
             Err(e) => {
                 eprintln!("Error: {}", e);
                 break;
-            },
+            }
         }
     }
 }
